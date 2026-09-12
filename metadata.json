@@ -1,0 +1,6 @@
+{
+  "name": "Minecraft",
+  "description": "3D Voxel sandbox building and exploration game inspired by Minecraft Java Edition 26.2 with world generation, mining, block placement, tools, crafting, 2000 HP god health mode, and authentic Java HUD.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
