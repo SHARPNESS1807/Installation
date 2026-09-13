@@ -98,7 +98,7 @@ fun TitleScreen(
     onDeleteWorld: (String) -> Unit
 ) {
     val context = LocalContext.current
-    var screenState by remember { mutableStateOf("MAIN") } // "MAIN", "WORLDS", "CREATE", "OPTIONS", "ABOUT", "MARKETPLACE"
+    var screenState by remember { mutableStateOf("MAIN") } // "MAIN", "WORLDS", "CREATE", "OPTIONS", "ABOUT", "MARKETPLACE", "MULTIPLAYER", "CREDITS"
 
     // Dialogs
     var showRealmsDialog by remember { mutableStateOf(false) }
@@ -384,6 +384,12 @@ fun TitleScreen(
                     onBack = { screenState = "MAIN" }
                 )
             }
+
+            "CREDITS" -> {
+                CreditsVideoScreen(
+                    onBack = { screenState = "MAIN" }
+                )
+            }
         }
 
         // Watermark & Copyright (Screenshot 4)
@@ -398,15 +404,44 @@ fun TitleScreen(
                     .padding(8.dp)
             )
 
-            Text(
-                text = "Copyright Mojang AB. Do not distribute!",
-                color = Color(0xCCFFFFFF),
-                fontFamily = FontFamily.Monospace,
-                fontSize = 11.sp,
+            Row(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(8.dp)
-            )
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(Color(0x99222222))
+                        .border(1.dp, Color(0xAA888888), RoundedCornerShape(3.dp))
+                        .clickable {
+                            soundManager.playClick()
+                            screenState = "CREDITS"
+                        }
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "Credits",
+                        color = Color(0xFFFFD54F),
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Text(
+                    text = "Copyright Mojang AB. Do not distribute!",
+                    color = Color(0xCCFFFFFF),
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 11.sp,
+                    modifier = Modifier.clickable {
+                        soundManager.playClick()
+                        screenState = "CREDITS"
+                    }
+                )
+            }
         }
 
         // Controller Notification Toast

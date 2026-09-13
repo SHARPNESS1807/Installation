@@ -1851,6 +1851,13 @@ private fun CreditsAndAttributionSubScreen(
 ) {
     var activeSubModal by remember { mutableStateOf<String?>(null) }
 
+    if (activeSubModal == "CreditsVideo") {
+        com.example.game.ui.CreditsVideoScreen(
+            onBack = { activeSubModal = null }
+        )
+        return
+    }
+
     JavaOptionsScreenScaffold(
         title = "Credits and Attribution",
         onDone = onBack
@@ -1862,6 +1869,12 @@ private fun CreditsAndAttributionSubScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            JavaOptionButton(
+                text = "▶ Watch Credits Video",
+                onClick = { activeSubModal = "CreditsVideo" },
+                modifier = Modifier.fillMaxWidth()
+            )
+
             JavaOptionButton(
                 text = "Credits",
                 onClick = { activeSubModal = "Credits" },
@@ -1884,6 +1897,7 @@ private fun CreditsAndAttributionSubScreen(
         if (activeSubModal != null) {
             CreditsDetailDialog(
                 type = activeSubModal ?: "",
+                onPlayVideo = { activeSubModal = "CreditsVideo" },
                 onDismiss = { activeSubModal = null }
             )
         }
@@ -1894,12 +1908,13 @@ private fun CreditsAndAttributionSubScreen(
 @Composable
 private fun CreditsDetailDialog(
     type: String,
+    onPlayVideo: () -> Unit = {},
     onDismiss: () -> Unit
 ) {
     BasicAlertDialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
-                .width(360.dp)
+                .width(380.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color(0xFF222222))
                 .border(2.dp, Color(0xFF666666), RoundedCornerShape(4.dp))
@@ -1919,7 +1934,7 @@ private fun CreditsDetailDialog(
 
                 Text(
                     text = when (type) {
-                        "Credits" -> "Minecraft: Java Edition\nCreated by Markus Persson\nDeveloped by Mojang Studios\nPojavLauncher community and Android port developers."
+                        "Credits" -> "Minecraft: Java Edition 26.2\n\nOfficial Credits Team:\n• Founder: Sharpness\n• Co-Founder & CCO: Dominator\n• Game Director: Sharpness\n• Head of Studio: Sharpness\n• Lead Dev & Designer: Vortex\n• Gameplay Programmer: Void-X\n• Graphics Designer: Sharpness\n• Narrative Director: Vortex\n• Lead Artist: Void-X\n• User Experience: Dominator\n• Audio Director: Vortex"
                         "Attribution" -> "Music by C418, Lena Raine, Kumi Tanioka.\nSound effects recorded and mixed by Mojang Studios.\nOriginal voxel textures & font by Mojang."
                         else -> "Open Source Software:\n• LWJGL 3 (BSD-3)\n• GLFW (zlib/libpng)\n• Jetpack Compose & AndroidX (Apache 2.0)\n• PojavLauncher Core (GPL-3.0)"
                     },
@@ -1928,6 +1943,14 @@ private fun CreditsDetailDialog(
                     fontSize = 11.sp,
                     textAlign = TextAlign.Center
                 )
+
+                if (type == "Credits") {
+                    JavaOptionButton(
+                        text = "▶ Play Credits Video",
+                        onClick = onPlayVideo,
+                        modifier = Modifier.fillMaxWidth(0.75f)
+                    )
+                }
 
                 JavaOptionButton(
                     text = "Done",
